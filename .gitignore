@@ -1,0 +1,10 @@
+main
+#task.txt
+*.o
+Makefile
+CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+build
+.vscode
+install_manifest.txt
