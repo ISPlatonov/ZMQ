@@ -37,7 +37,7 @@ int main()
         std::cout << "Data is formed" << std::endl;
         data.range_data();
 
-        std::cout << "  RECEIVED: " << data.data_to_string() << std::endl;
+        std::cout << "  RECEIVED:\n-----\n" << data.data_to_string() << "\n-----" << std::endl;
     }
 
     return 0;

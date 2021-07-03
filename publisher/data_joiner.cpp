@@ -1,7 +1,5 @@
 #include "data_joiner.hpp"
 
-//using namespace data_joiner;
-
 data_joiner::student_data data_joiner::intersection(const data_joiner::student_data left, const data_joiner::student_data right)
 {
     data_joiner::student_data result;
