@@ -16,7 +16,7 @@ std::vector<std::string> data_wrapper::split(const std::string s, const std::str
     return result;
 }
 
-void data_wrapper::data_wrapper(const std::string& path_to_file, data_joiner::student_data* data)
+int data_wrapper::data_wrapper(const std::string& path_to_file, data_joiner::student_data* data)
 {
     std::ifstream student_file;
     student_file.open(path_to_file);
@@ -24,7 +24,7 @@ void data_wrapper::data_wrapper(const std::string& path_to_file, data_joiner::st
     if (!student_file.is_open())
     {
         std::cerr << "File " << path_to_file << " is not open" << std::endl;
-        return;
+        return 1;
     }
 
     std::string line;
@@ -41,29 +41,11 @@ void data_wrapper::data_wrapper(const std::string& path_to_file, data_joiner::st
         if (data_line.size() != 3)
         {
             std::cerr << "Invalid data in file" << std::endl;
-            return;
+            return 1;
         }
         data->emplace_back(data_line[0], data_line[1], data_line[2]);
     }
     student_file.close();
 
-    return;
-}
-
-/*
-int main()
-{
-    data_joiner::student_data data_1, data_2, result_data;
-    data_wrapper::data_wrapper("data/student_file_1.txt", &data_1);
-    data_wrapper::data_wrapper("data/student_file_2.txt", &data_2);
-
-    result_data = data_joiner::intersection(data_1, data_2);
-
-    for (auto data_line : result_data)
-    {
-        std::cout << std::get<0>(data_line) << ' ' << std::get<1>(data_line) << ' ' << std::get<2>(data_line) << std::endl;
-    }
-
     return 0;
 }
-*/

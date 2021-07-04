@@ -2,37 +2,50 @@
 #include <chrono>
 #include <thread>
 #include <iostream>
+#include <thread>
 
 #include <zmq.hpp>
 
+#include "subscriber/subscriber.hpp"
+#include "publisher/publisher.hpp"
+
+void pub_thread()
+{
+    publisher pub;
+    std::cout << "pub created" << std::endl;
+    pub.worker("publisher/data");
+    std::cout << "pub works" << std::endl;
+}
+
+void sub_thread()
+{
+    subscriber sub;
+    std::cout << "sub created" << std::endl;
+    sub.worker();
+    std::cout << "sub works" << std::endl;
+}
+
 int main() 
 {
-    using namespace std::chrono_literals;
+    /*
+    std::cout << "started" << std::endl;
+    publisher pub("tcp://*:5678");
+    std::cout << "pub created" << std::endl;
+    subscriber sub("tcp://localhost:5678");
+    std::cout << "sub created" << std::endl;
 
-    // initialize the zmq context with a single IO thread
-    zmq::context_t context{1};
+    sub.worker();
+    std::cout << "sub works" << std::endl;
 
-    // construct a REP (reply) socket and bind to interface
-    zmq::socket_t socket{context, zmq::socket_type::pub};
-    socket.bind("tcp://*:5555");
+    pub.worker();
+    std::cout << "pub works" << std::endl;
+    */
+    
+    std::thread pub_trd(pub_thread);
+    std::thread sub_trd(sub_thread);
 
-    // prepare some static data for responses
-    //const std::string data{"World"};
-
-    for (;;) 
-    {
-        std::string data;
-
-        std::cout << "Type a message for publishing" << std::endl;
-        //std::cin >> data;
-        std::getline(std::cin, data);
-
-        std::this_thread::sleep_for(1s);
-
-        // send the data to the client
-        socket.send(zmq::buffer(data), zmq::send_flags::none);
-        std::cout << "  SENT: " << data << std::endl;
-    }
-
+    pub_trd.join();
+    sub_trd.join();
+    
     return 0;
 }

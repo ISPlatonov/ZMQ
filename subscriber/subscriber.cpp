@@ -1,44 +1,48 @@
-#include <string>
-#include <chrono>
-#include <thread>
-#include <iostream>
+#include "subscriber.hpp"
 
-#include <zmq.hpp>
-
-#include "structure_data_maker.hpp"
-
-int main() 
+subscriber::subscriber(const char* addr)
 {
-    using namespace std::chrono_literals;
-
     // initialize the zmq context with a single IO thread
-    zmq::context_t context{1};
+    this->context = zmq::context_t{1};
+    std::cout << "sub context made" << std::endl;
 
     // construct a SUB socket and connect to interface
-    zmq::socket_t socket{context, zmq::socket_type::sub};
+    this->socket = zmq::socket_t{context, zmq::socket_type::sub};
+    std::cout << "sub socket created" << std::endl;
     socket.setsockopt(ZMQ_SUBSCRIBE, "", std::strlen(""));
-    socket.connect("tcp://localhost:5555");
+    std::cout << "sub setsockopt made" << std::endl;
+    socket.connect(addr);
+    std::cout << "sub socket connected" << std::endl;
+}
 
-    // prepare some static data for sendings
-    const std::string data{"Hello"};
+subscriber::~subscriber()
+{
+    this->socket.close();
+}
 
-    std::this_thread::sleep_for(1s);
+int subscriber::worker()
+{
+    zmq::message_t message;
 
-    for (;;) 
-    {
-        zmq::message_t message;
+    std::cout << "Waiting for a message..." << std::endl;
 
-        std::cout << "Waiting for a message..." << std::endl;
+    // receive a message from the server
+    this->socket.recv(message, zmq::recv_flags::none);
 
-        // receive a message from the server
-        socket.recv(message, zmq::recv_flags::none);
+    student_data data = string_to_data(message.to_string());
+    std::cout << "Data is formed" << std::endl;
+    data.range_data();
 
-        student_data data = string_to_data(message.to_string());
-        std::cout << "Data is formed" << std::endl;
-        data.range_data();
-
-        std::cout << "  RECEIVED:\n-----\n" << data.data_to_string() << "\n-----" << std::endl;
-    }
+    std::cout << "  RECEIVED:\n-----\n" << data.data_to_string() << "\n-----" << std::endl;
 
     return 0;
 }
+/*
+int main()
+{
+    subscriber sub;
+    std::cout << "sub created" << std::endl;
+    sub.worker();
+    std::cout << "sub works" << std::endl;
+}
+*/
