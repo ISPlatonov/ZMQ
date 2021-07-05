@@ -12,7 +12,7 @@
 class subscriber
 {
 public:
-    subscriber(const char* addr="tcp://localhost:5555");
+    subscriber(const char* addr="tcp://172.17.0.1:5555");
 
     // receive a message
     int worker();

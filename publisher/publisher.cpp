@@ -2,7 +2,7 @@
 
 int publisher::worker(const std::string& path_to_data)
 {
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     data_joiner::student_data data_1, data_2, result_data;
 
@@ -39,7 +39,7 @@ publisher::~publisher()
 {
     this->socket.close();
 }
-/*
+
 int main()
 {
     publisher pub;
@@ -47,4 +47,3 @@ int main()
     pub.worker("data");
     std::cout << "pub works" << std::endl;
 }
-*/

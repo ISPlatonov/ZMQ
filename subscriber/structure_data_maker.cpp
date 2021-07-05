@@ -5,7 +5,7 @@ std::string student_data::data_to_string()
     std::string result;
     for (auto data_line : *this)
     {
-        result += (std::get<0>(data_line) + ' ' + std::get<1>(data_line) + ' ' + std::get<2>(data_line) + '\n');
+        result += (std::get<0>(data_line) + ' ' + std::get<1>(data_line) + ' ' + std::get<2>(data_line) + ' ' + std::get<3>(data_line) + ' ' + std::get<4>(data_line) + '\n');
     }
     return result;
 }

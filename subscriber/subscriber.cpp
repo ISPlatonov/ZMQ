@@ -37,7 +37,7 @@ int subscriber::worker()
 
     return 0;
 }
-/*
+
 int main()
 {
     subscriber sub;
@@ -45,4 +45,3 @@ int main()
     sub.worker();
     std::cout << "sub works" << std::endl;
 }
-*/

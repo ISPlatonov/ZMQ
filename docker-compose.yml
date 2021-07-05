@@ -1,0 +1,16 @@
+version: "3"
+services:
+    publisher:
+        build:
+            context: publisher
+            dockerfile: Dockerfile
+            #container_name: zmq-pub-cont
+        ports:
+            - 5555:5555
+    subscriber:
+        build:
+            context: subscriber
+            dockerfile: Dockerfile
+            #container_name: zmq-sub-cont
+        ports:
+            - 4444:5555
